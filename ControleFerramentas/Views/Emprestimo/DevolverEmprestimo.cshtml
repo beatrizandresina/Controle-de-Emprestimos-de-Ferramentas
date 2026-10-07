@@ -1,0 +1,33 @@
+﻿@model ControleFerramentas.Models.EmprestimoModel
+
+@{
+    ViewData["Title"] = "Confirmar Devolução";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Confirmar Devolução</h2>
+</div>
+
+<div class="alert alert-success shadow-sm">
+    <h4 class="alert-heading">Registrar Devolução</h4>
+    <p>Você está prestes a registrar a devolução da ferramenta <strong>@Model.Ferramenta?.Nome</strong>.</p>
+    <hr>
+    <p class="mb-0">Ao confirmar, a data atual será registrada e a ferramenta voltará a ficar "Disponível" para novos empréstimos.</p>
+</div>
+
+<form asp-action="DevolverEmprestimo" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body bg-light">
+            <p class="mb-1"><strong>Emprestado para:</strong> @Model.Pessoa?.Nome</p>
+            <p class="mb-0"><strong>Data da retirada:</strong> @Model.DataEmprestimo</p>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">Confirmar Devolução</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+    </div>
+</form>

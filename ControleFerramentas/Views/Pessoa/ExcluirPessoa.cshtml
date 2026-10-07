@@ -1,0 +1,25 @@
+﻿@model ControleFerramentas.Models.PessoaModel
+
+@{
+    ViewData["Title"] = "Excluir Pessoa";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Excluir Pessoa</h2>
+</div>
+
+<div class="alert alert-danger shadow-sm">
+    <h4 class="alert-heading">Atenção!</h4>
+    <p>Tem a certeza que deseja apagar a pessoa <strong>"@Model.Nome"</strong>?</p>
+    <hr>
+    <p class="mb-0">Esta ação é irreversível e a pessoa será removida permanentemente da base de dados.</p>
+</div>
+
+<form asp-action="ExcluirPessoa" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-danger">Sim, apagar pessoa</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+    </div>
+</form>

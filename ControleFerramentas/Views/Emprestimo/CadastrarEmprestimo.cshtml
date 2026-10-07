@@ -1,0 +1,33 @@
+﻿@model ControleFerramentas.Models.EmprestimoModel
+
+@{
+    ViewData["Title"] = "Novo Empréstimo";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Registrar Novo Empréstimo</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="CadastrarEmprestimo" method="post">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Colaborador / Pessoa:</label>
+                <select asp-for="PessoaId" class="form-select" asp-items="ViewBag.Pessoas" required>
+                    <option value="">-- Selecione a pessoa --</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Ferramenta:</label>
+                <select asp-for="FerramentaId" class="form-select" asp-items="ViewBag.Ferramentas" required>
+                    <option value="">-- Selecione a ferramenta --</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Registrar Empréstimo</button>
+        </form>
+    </div>
+</div>

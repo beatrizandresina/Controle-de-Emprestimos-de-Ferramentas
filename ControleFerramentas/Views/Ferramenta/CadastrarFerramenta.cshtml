@@ -1,0 +1,42 @@
+﻿@model ControleFerramentas.Models.FerramentaModel
+
+@{
+    ViewData["Title"] = "Cadastrar Ferramenta";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Cadastrar Nova Ferramenta</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="CadastrarFerramenta" method="post">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Nome da ferramenta:</label>
+                <input asp-for="Nome" class="form-control" required placeholder="Digite o nome da ferramenta..." />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Descrição da ferramenta:</label>
+                <textarea asp-for="Descricao" class="form-control" rows="3" required placeholder="Digite a descrição da ferramenta..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Observação:</label>
+                <textarea asp-for="Observacao" class="form-control" rows="2" placeholder="Digite uma observação (opcional)..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Disponibilidade:</label>
+                <select asp-for="Disponivel" class="form-select">
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Cadastrar Ferramenta</button>
+        </form>
+    </div>
+</div>

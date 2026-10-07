@@ -1,0 +1,132 @@
+﻿@model IEnumerable<ControleFerramentas.Models.EmprestimoModel>
+
+@{
+    ViewData["Title"] = "Lista de Empréstimos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <h2 class="m-0">Controle de Empréstimos</h2>
+    </div>
+
+    <a class="btn btn-primary" asp-controller="Emprestimo" asp-action="CadastrarEmprestimo">
+        + Novo Empréstimo
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" id="formFiltros" asp-action="Index" class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Pessoa ou Ferramenta</label>
+                <input type="text" id="campoPesquisa" name="pesquisa" value="@ViewBag.Pesquisa" class="form-control" placeholder="Escreva um nome..." />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Status</label>
+                <select id="campoStatus" name="status" class="form-select">
+                    <option value="">Todos</option>
+                    <option value="Pendente" selected="@(ViewBag.Status == "Pendente" ? "selected" : null)">Pendente</option>
+                    <option value="Devolvido" selected="@(ViewBag.Status == "Devolvido" ? "selected" : null)">Devolvido</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Dia</label>
+                <select id="Dia" name="dia" class="form-select">
+                    <option value="">Todos</option>
+                    @for (int i = 1; i <= 30; i++)
+                    {
+                        <option value="@i" selected="@(ViewBag.Dia == i ? "selected" : null)">@i</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Mês</label>
+                <select id="Mes" name="mes" class="form-select">
+                    <option value="">Todos</option>
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        <option value="@i" selected="@(ViewBag.Mes == i ? "selected" : null)">@i</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Ano</label>
+                <input type="number" id="Ano" name="ano" value="@ViewBag.Ano" class="form-control" placeholder="Ex: 2024" />
+            </div>
+
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+
+                <a asp-action="Index" class="btn btn-secondary w-100">Limpar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover table-bordered border-light shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Pessoa</th>
+            <th>Ferramenta</th>
+            <th>Data Retirada</th>
+            <th>Status / Devolução</th>
+            <th class="text-center">Ações</th>
+        </tr>
+    </thead>
+    <tbody class="align-middle">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Pessoa?.Nome</td>
+                <td>@item.Ferramenta?.Nome</td>
+                <td>@item.DataEmprestimo.ToString("dd/MM/yyyy HH:mm")</td>
+
+                <td>
+                    @if (item.DataDevolucao != null)
+                    {
+                        <span class="badge bg-success mb-1">Devolvido</span>
+                
+                        <br />
+                        <small class="text-muted">@item.DataDevolucao?.ToString("dd/MM/yyyy HH:mm")</small>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pendente</span>
+                    }
+                </td>
+
+                <td class="text-center">
+                    <a class="btn btn-sm btn-info text-white" asp-controller="Emprestimo" asp-action="DetalhesEmprestimo" asp-route-id="@item.Id">Detalhes</a>
+
+                    @if (item.DataDevolucao == null)
+                    {
+                        <a class="btn btn-sm btn-success" asp-controller="Emprestimo" asp-action="DevolverEmprestimo" asp-route-id="@item.Id">Devolver</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <span>Página @ViewBag.PaginaAtual de @ViewBag.TotalPaginas</span>
+
+    <div class="d-flex gap-2">
+        @if (ViewBag.PaginaAtual > 1)
+        {
+            <a href="?pagina=@(ViewBag.PaginaAtual - 1)&pesquisa=@ViewBag.Pesquisa" class="btn btn-outline-primary">Anterior</a>
+        }
+
+        @if (ViewBag.PaginaAtual < ViewBag.TotalPaginas)
+        {
+            <a href="?pagina=@(ViewBag.PaginaAtual + 1)&pesquisa=@ViewBag.Pesquisa" class="btn btn-outline-primary">Próxima</a>
+        }
+    </div>
+</div>

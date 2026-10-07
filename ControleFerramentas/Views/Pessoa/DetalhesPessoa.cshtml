@@ -1,0 +1,27 @@
+﻿@model ControleFerramentas.Models.PessoaModel
+
+@{
+    ViewData["Title"] = "Detalhes da Pessoa";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Detalhes da Pessoa</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        <h4 class="mb-0">@Model.Nome</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+
+            <dt class="col-sm-3 mb-3">Telefone:</dt>
+            <dd class="col-sm-9 mb-3">@Model.Telefone</dd>
+
+            <dt class="col-sm-3 mb-3">Email:</dt>
+            <dd class="col-sm-9 mb-3">@Model.Email</dd>
+
+        </dl>
+    </div>
+</div>

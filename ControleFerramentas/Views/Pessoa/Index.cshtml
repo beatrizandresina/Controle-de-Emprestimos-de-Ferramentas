@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ControleFerramentas.Models.PessoaModel>
+
+@{
+    ViewData["Title"] = "Lista de Pessoas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex align-items-center gap-3">
+        <a class="btn btn-secondary" asp-controller="Emprestimo" asp-action="Index">Voltar</a>
+        <h2 class="m-0">Pessoas Cadastradas</h2>
+    </div>
+
+    <a class="btn btn-primary" asp-controller="Pessoa" asp-action="CadastrarPessoa">
+        + Cadastrar Nova
+    </a>
+</div>
+
+<table class="table table-striped table-hover table-bordered border-light shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th class="text-center">Ações</th>
+        </tr>
+    </thead>
+    <tbody class="align-middle">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.Email</td>
+                <td>@item.Telefone</td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-warning" asp-controller="Pessoa" asp-action="EditarPessoa" asp-route-id="@item.Id">Editar</a>
+                    <a class="btn btn-sm btn-info text-white" asp-controller="Pessoa" asp-action="DetalhesPessoa" asp-route-id="@item.Id">Detalhes</a>
+                    <a class="btn btn-sm btn-danger" asp-controller="Pessoa" asp-action="ExcluirPessoa" asp-route-id="@item.Id">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
