@@ -13,21 +13,43 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
             <div class="container">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="navbar-brand" asp-controller="Emprestimo" asp-action="Index">Controle de Emprestimos de Ferramentas</a>
+                    } else if (User.IsInRole("Usuario"))
+                    {
+                        <a class="navbar-brand" asp-controller="Usuario" asp-action="Index">Controle de Emprestimos de Ferramentas</a>
 
-                <a class="navbar-brand" asp-controller="Emprestimo" asp-action="Index">Controle de Emprestimos de Ferramentas</a>
-
+                    }
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="menuPrincipal">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Ferramenta" asp-action="Index">Ferramentas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Pessoa" asp-action="Index">Pessoas</a>
-                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Ferramenta" asp-action="Index">Ferramentas</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Pessoa" asp-action="Index">Pessoas</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Emprestimo" asp-action="Index">Controle de Empréstimos</a></li>
+                            }
+                            else if (User.IsInRole("Usuario"))
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Usuario" asp-action="Index">Meus Empréstimos</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Usuario" asp-action="SolicitarFerramenta">Solicitar ferramenta</a></li>
+                            }
+
+                            <li class="nav-item ms-3 d-flex align-items-center">
+                                <span class="navbar-text me-3 text-dark">Olá, <strong>@User.Identity.Name</strong>!</span>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="Login" asp-action="Sair">Sair</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

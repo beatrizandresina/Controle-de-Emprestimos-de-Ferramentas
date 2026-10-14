@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ControleFerramentas.Data;
+﻿using ControleFerramentas.Data;
 using ControleFerramentas.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleFerramentas.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmprestimoController : Controller
     {
         private readonly ILogger<EmprestimoController> _logger;
@@ -16,7 +18,7 @@ namespace ControleFerramentas.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string pesquisa, string status,int? dia, int? mes, int? ano, int pagina = 1)
+        public async Task<IActionResult> Index(string pesquisa, string status, int? dia, int? mes, int? ano, int pagina = 1)
         {
             int itensPorPagina = 10;
 
@@ -34,8 +36,9 @@ namespace ControleFerramentas.Controllers
 
             if (!string.IsNullOrEmpty(status))
             {
-                if (status == "Pendente") consulta = consulta.Where(e => e.DataDevolucao == null);
-                if (status == "Devolvido") consulta = consulta.Where(e => e.DataDevolucao != null);
+                if (status == "D") consulta = consulta.Where(e => e.Status == "D");
+                if (status == "U") consulta = consulta.Where(e => e.Status == "U");
+                if (status == "A") consulta = consulta.Where(e => e.Status == "A");
             }
 
             if (dia.HasValue) consulta = consulta.Where(e => e.DataEmprestimo.Day == dia.Value);
@@ -70,7 +73,7 @@ namespace ControleFerramentas.Controllers
             var ferramentasDisponiveis = await _context.Ferramentas
                 .Where(f => f.Disponivel == true)
                 .ToListAsync();
-            
+
             ViewBag.Pessoas = new SelectList(pessoas, "Id", "Nome");
             ViewBag.Ferramentas = new SelectList(ferramentasDisponiveis, "Id", "Nome");
 
@@ -82,10 +85,14 @@ namespace ControleFerramentas.Controllers
         {
             ModelState.Remove("Ferramenta");
             ModelState.Remove("Pessoa");
+
+            ModelState.Remove("Status");
+            ModelState.Remove("DataEmprestimo");
             if (ModelState.IsValid)
             {
                 var ferramenta = await _context.Ferramentas.FindAsync(emprestimoModel.FerramentaId);
-                
+
+                emprestimoModel.Status = "U";
                 if (ferramenta != null && ferramenta.Disponivel == true)
                 {
                     emprestimoModel.DataEmprestimo = DateTime.Now;
@@ -148,11 +155,12 @@ namespace ControleFerramentas.Controllers
             {
                 return NotFound();
             }
-            
+
             var ferramenta = await _context.Ferramentas.FindAsync(emprestimo.FerramentaId);
 
+            emprestimo.Status = "D";
             emprestimo.DataDevolucao = DateTime.Now;
-            if(ferramenta != null)
+            if (ferramenta != null)
             {
                 ferramenta.Disponivel = true;
                 _context.Ferramentas.Update(ferramenta);
@@ -161,5 +169,46 @@ namespace ControleFerramentas.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EntregarFerramenta(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var emprestimo = await _context.Emprestimos
+                .Include(e => e.Ferramenta)
+                .Include(e => e.Pessoa)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (emprestimo == null)
+            {
+                return NotFound();
+            }
+            return View(emprestimo);
+        }
+
+        [HttpPost, ActionName("EntregarFerramenta")]
+        public async Task<IActionResult> ConfirmarEntrega(int id)
+        {
+            var emprestimo = await _context.Emprestimos.FindAsync(id);
+            if (emprestimo == null)
+            {
+                return NotFound();
+            }
+
+            var ferramenta = await _context.Ferramentas.FindAsync(emprestimo.FerramentaId);
+            emprestimo.DataEmprestimo = DateTime.Now;
+            emprestimo.Status = "U";
+            if (ferramenta != null)
+            {
+                ferramenta.Disponivel = false;
+                _context.Ferramentas.Update(ferramenta);
+            }
+            _context.Emprestimos.Update(emprestimo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
     }
 }

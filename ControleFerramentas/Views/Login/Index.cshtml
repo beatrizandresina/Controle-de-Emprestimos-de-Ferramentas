@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Controle de Ferramentas</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    <div class="card shadow" style="width: 400px;">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-4">Acesso ao Sistema</h3>
+
+            @if (ViewBag.Erro != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Erro</div>
+            }
+
+            <form asp-controller="Login" asp-action="Index" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">E-mail</label>
+                    <input type="email" name="email" class="form-control" required placeholder="Digite seu e-mail" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Senha</label>
+                    <input type="password" name="senha" class="form-control" required placeholder="Digite sua senha" />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

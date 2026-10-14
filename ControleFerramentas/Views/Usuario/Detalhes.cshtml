@@ -1,0 +1,50 @@
+﻿@model ControleFerramentas.Models.EmprestimoModel
+
+@{
+    ViewData["Title"] = "Detalhes do Empréstimo";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Detalhes do Empréstimo</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Empréstimo #@Model.Id</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 mb-3">Pessoa / Colaborador:</dt>
+            <dd class="col-sm-9 mb-3">@Model.Pessoa?.Nome</dd>
+
+            <dt class="col-sm-3 mb-3">Ferramenta Emprestada:</dt>
+            <dd class="col-sm-9 mb-3">@Model.Ferramenta?.Nome</dd>
+
+            <dt class="col-sm-3 mb-3">Data da Retirada:</dt>
+            <dd class="col-sm-9 mb-3">@Model.DataEmprestimo</dd>
+
+            <dt class="col-sm-3 mb-3">Data da Devolução:</dt>
+            <dd class="col-sm-9 mb-3">
+                @if (Model.DataDevolucao != null)
+                {
+                    @Model.DataDevolucao
+                }
+                else
+                {
+                    <span class="text-muted">Ainda não devolvido</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3 mb-3">Status Atual:</dt>
+            @if(@Model.Status == "D")
+            {
+                <dd class="col-sm-9 mb-3">Devolvido</dd>
+            } else if (@Model.Status == "U"){
+                <dd class="col-sm-9 mb-3">Em Uso</dd>
+            } else if(@Model.Status == "A"){
+            <dd class="col-sm-9 mb-3">Aguardando retirada</dd>
+            }
+        </dl>
+    </div>
+</div>

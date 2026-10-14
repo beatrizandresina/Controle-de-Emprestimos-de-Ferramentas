@@ -7,6 +7,7 @@
         public int PessoaId { get; set; }
         public DateTime DataEmprestimo { get; set; }
         public DateTime? DataDevolucao { get; set; }
+        public string Status { get; set; }
         public FerramentaModel Ferramenta { get; set; }
         public PessoaModel Pessoa { get; set; }
     }

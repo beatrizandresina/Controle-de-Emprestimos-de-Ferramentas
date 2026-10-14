@@ -1,0 +1,26 @@
+﻿@model ControleFerramentas.Models.EmprestimoModel
+
+@{
+    ViewData["Title"] = "Nova Solicitação";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+    <h2>Solicitar Nova Ferramenta</h2>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="SolicitarFerramenta" method="post">
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Escolha a Ferramenta:</label>
+                <select asp-for="FerramentaId" class="form-select" asp-items="ViewBag.Ferramentas" required>
+                    <option value="">-- Selecione a ferramenta --</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Confirmar Solicitação</button>
+        </form>
+    </div>
+</div>

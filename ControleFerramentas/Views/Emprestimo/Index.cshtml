@@ -27,11 +27,12 @@
                 <label class="form-label fw-bold">Status</label>
                 <select id="campoStatus" name="status" class="form-select">
                     <option value="">Todos</option>
-                    <option value="Pendente" selected="@(ViewBag.Status == "Pendente" ? "selected" : null)">Pendente</option>
-                    <option value="Devolvido" selected="@(ViewBag.Status == "Devolvido" ? "selected" : null)">Devolvido</option>
+                    <option value="D" selected="@(ViewBag.Status == "D" ? "selected" : null)">Devolvido</option>
+                    <option value="U" selected="@(ViewBag.Status == "U" ? "selected" : null)">Em uso</option>
+                    <option value="A" selected="@(ViewBag.Status == "A" ? "selected" : null)">Aguardando retirada</option>
                 </select>
             </div>
-
+             
             <div class="col-md-2">
                 <label class="form-label fw-bold">Dia</label>
                 <select id="Dia" name="dia" class="form-select">
@@ -40,6 +41,7 @@
                     {
                         <option value="@i" selected="@(ViewBag.Dia == i ? "selected" : null)">@i</option>
                     }
+                    ]
                 </select>
             </div>
 
@@ -104,9 +106,12 @@
                 <td class="text-center">
                     <a class="btn btn-sm btn-info text-white" asp-controller="Emprestimo" asp-action="DetalhesEmprestimo" asp-route-id="@item.Id">Detalhes</a>
 
-                    @if (item.DataDevolucao == null)
+                    @if (item.Status == "U")
                     {
-                        <a class="btn btn-sm btn-success" asp-controller="Emprestimo" asp-action="DevolverEmprestimo" asp-route-id="@item.Id">Devolver</a>
+                        <a class="btn btn-sm btn-success" asp-controller="Emprestimo" asp-action="DevolverEmprestimo" asp-route-id="@item.Id">Confirmar devolução</a>
+                    } else if (item.Status == "A")
+                    {
+                        <a class="btn btn-sm btn-warning" asp-controller="Emprestimo" asp-action="EntregarFerramenta" asp-route-id="@item.Id">Entregar ferramenta</a>
                     }
                 </td>
             </tr>

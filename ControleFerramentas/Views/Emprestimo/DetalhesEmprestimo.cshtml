@@ -37,16 +37,18 @@
             </dd>
 
             <dt class="col-sm-3 mb-3">Status Atual:</dt>
-            <dd class="col-sm-9 mb-3">
-                @if (Model.DataDevolucao != null)
-                {
-                    <span class="badge bg-success">Concluído</span>
-                }
-                else
-                {
-                    <span class="badge bg-warning text-dark">Pendente / Em uso</span>
-                }
-            </dd>
+            @if (@Model.Status == "D")
+            {
+                <dd class="col-sm-9 mb-3">Devolvido</dd>
+            }
+            else if (@Model.Status == "U")
+            {
+                <dd class="col-sm-9 mb-3">Em Uso</dd>
+            }
+            else if (@Model.Status == "A")
+            {
+                <dd class="col-sm-9 mb-3">Aguardando retirada</dd>
+            }
         </dl>
     </div>
 </div>

@@ -1,0 +1,26 @@
+﻿@model ControleFerramentas.Models.EmprestimoModel
+
+@{
+    ViewData["Title"] = "Confirmar Entrega";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Confirmar Entrega da Ferramenta</h2>
+    <a class="btn btn-outline-secondary" asp-action="Index">Voltar</a>
+</div>
+
+<div class="alert alert-info shadow-sm">
+    <h4 class="alert-heading">Liberar Ferramenta</h4>
+    <p>O usuário <strong>@Model.Pessoa?.Nome</strong> está solicitando a ferramenta <strong>@Model.Ferramenta?.Nome</strong>.</p>
+    <hr>
+    <p class="mb-0">Ao confirmar, o status mudará para "Em uso" e a data atual será registrada.</p>
+</div>
+
+<form asp-action="EntregarFerramenta" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">Confirmar Entrega</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+    </div>
+</form>

@@ -82,6 +82,8 @@ namespace ControleFerramentas.Controllers
                     pessoa.Nome = pessoaModel.Nome;
                     pessoa.Email = pessoaModel.Email;
                     pessoa.Telefone = pessoaModel.Telefone;
+                    pessoa.Senha = pessoaModel.Senha;
+                    pessoa.Perfil = pessoaModel.Perfil;
                     _context.Pessoas.Update(pessoa);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Index");
